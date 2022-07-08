@@ -5,7 +5,7 @@ import { AuthProvider } from "../lib/AuthContext";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </AuthProvider>
   );
 }
