@@ -1,12 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+
+import { useEffect, useState } from "react";
+
 import styles from "../styles/Home.module.css";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 import { firebaseConfig } from "../lib/firebase";
 
@@ -18,6 +21,18 @@ const Home: NextPage = () => {
     signOut(auth);
   };
 
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const authStateChanged = onAuthStateChanged(auth, async (user) => {
+      const email = user?.email ? user.email : "no name";
+      setName(email);
+    });
+    return () => {
+      authStateChanged();
+    };
+  });
+
   return (
     <div className={styles.container}>
       <Head>
@@ -28,6 +43,7 @@ const Home: NextPage = () => {
       <main>
         <div>Firebase Sample Page</div>
         <button onClick={logout}>Logout</button>
+        <div>{name}</div>
       </main>
     </div>
   );
