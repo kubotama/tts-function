@@ -12,7 +12,12 @@ import { auth } from "./index";
 const Login: NextPage = () => {
   const uiConfig: firebaseui.auth.Config = {
     signInFlow: "redirect",
-    signInOptions: [EmailAuthProvider.PROVIDER_ID],
+    signInOptions: [
+      {
+        provider: EmailAuthProvider.PROVIDER_ID,
+        disableSignUp: { status: true },
+      },
+    ],
     signInSuccessUrl: "/",
   };
 
