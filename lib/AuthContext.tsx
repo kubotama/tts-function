@@ -1,3 +1,4 @@
+import { ReactNode, createContext, useState, useEffect } from "react";
 import {
   ReactNode,
   createContext,
@@ -22,10 +23,6 @@ export type AuthProps = {
 
 const AuthContext = createContext<Partial<AuthContextProps>>({});
 
-export const useAuthContext = () => {
-  return useContext(AuthContext);
-};
-
 export const AuthProvider = ({ children }: AuthProps) => {
   const router = useRouter();
   const [user, setUser] = useState<UserType>(null);
@@ -44,6 +41,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     };
   }, [isAvailableForViewing, router]);
 
+  // return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
