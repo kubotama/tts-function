@@ -1,12 +1,5 @@
 import { ReactNode, createContext, useState, useEffect } from "react";
-import {
-  ReactNode,
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-} from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { useRouter } from "next/router";
 import { auth } from "../pages/index";
