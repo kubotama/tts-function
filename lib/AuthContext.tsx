@@ -1,11 +1,5 @@
-import {
-  ReactNode,
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-} from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { ReactNode, createContext, useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import type { User } from "firebase/auth";
 import { useRouter } from "next/router";
 import { auth } from "../pages/index";
@@ -21,10 +15,6 @@ export type AuthProps = {
 };
 
 const AuthContext = createContext<Partial<AuthContextProps>>({});
-
-export const useAuthContext = () => {
-  return useContext(AuthContext);
-};
 
 export const AuthProvider = ({ children }: AuthProps) => {
   const router = useRouter();
@@ -44,6 +34,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     };
   }, [isAvailableForViewing, router]);
 
+  // return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
