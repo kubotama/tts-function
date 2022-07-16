@@ -2,6 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 
 import { useEffect, useState } from "react";
+// import ReactPlayer from "react-player";
+import dynamic from "next/dynamic";
+const ReactPlayer = dynamic(() => import("react-player/file"), { ssr: false });
 
 import styles from "../styles/Home.module.css";
 
@@ -10,6 +13,7 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import { firebaseConfig } from "../lib/firebase";
 
@@ -22,16 +26,25 @@ const Home: NextPage = () => {
   };
 
   const [name, setName] = useState("");
+  // const url = urls;
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const filename = "main.wav";
 
   useEffect(() => {
     const authStateChanged = onAuthStateChanged(auth, async (user) => {
-      const email = user?.email ? user.email : "no name";
+      if (user) {
+        const storage = getStorage();
+        getDownloadURL(ref(storage, filename)).then((url) => {
+          setDownloadUrl(url);
+        });
+      }
+      const email = user?.email || "no name";
       setName(email);
     });
     return () => {
       authStateChanged();
     };
-  });
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -44,6 +57,8 @@ const Home: NextPage = () => {
         <div>Firebase Sample Page</div>
         <button onClick={logout}>Logout</button>
         <div>{name}</div>
+        <div>{downloadUrl}</div>
+        <ReactPlayer url={downloadUrl} controls={true} height={"100px"} />
       </main>
     </div>
   );
